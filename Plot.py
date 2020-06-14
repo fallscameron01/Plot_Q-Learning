@@ -32,4 +32,7 @@ class Plot:
         -------
         None
         """
+        if actions == None:
+            actions = {i : 0 for i in self.actions}
         self.qTable.update({state : actions})
+
