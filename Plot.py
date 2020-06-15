@@ -17,6 +17,7 @@ class Plot:
     def __init__(self, actionSpace):
         self.actions = np.array(actionSpace)
         self.qTable = {}
+        self.episodes = {}
 
     def addState(self, state, actions=None):
         """
@@ -36,6 +37,23 @@ class Plot:
         if actions == None:
             actions = {i : 0 for i in self.actions}
         self.qTable.update({state : actions})
+
+    def addEpReward(self, episode, reward):
+        """
+        Saves an episode with its reward for later plotting.
+
+        Parameters
+        ----------
+        episode: int
+            The episode number.
+        reward: float
+            The associated reward.
+        
+        Returns
+        -------
+        none
+        """
+        self.episodes.update({episode : reward})
 
     def displayQTable(self):
         """
@@ -67,7 +85,24 @@ class Plot:
         plt.ylabel("Value")
         plt.show()
 
+    def plotRewards(self):
+        """
+        Creates and displays a line graph of episodes and rewards.
+
+        Returns
+        -------
+        none
+        """
+        df = pd.DataFrame(self.episodes.values(), index=self.episodes.keys())
+        df.plot(sort_columns=True)
+        plt.xlabel("Episode")
+        plt.ylabel("Reward")
+        plt.legend("Reward")
+        plt.show()
+
 if __name__ == '__main__':
+    import random
+
     actionSpace = (0, 1, 2)
     p = Plot(actionSpace)
 
@@ -80,3 +115,7 @@ if __name__ == '__main__':
 
     p.displayQTable()
     p.plotQTable()
+    
+    for i in range(100):
+        p.addEpReward(i, random.randrange(1, 500))
+    p.plotRewards()
