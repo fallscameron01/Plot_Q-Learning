@@ -38,6 +38,21 @@ class Plot:
             actions = {i : 0 for i in self.actions}
         self.qTable.update({state : actions})
 
+    def addQTable(self, table):
+        """
+        Saves an entire Q-Table. Will delete any previously saved state-actions in the Q-Table.
+
+        Parameters
+        ----------
+        table: dictionary {any : dictionary {any : float}}
+            The states as keys, each with a dictionary of actions and weights.
+
+        Returns
+        -------
+        none
+        """
+        self.qTable = table
+
     def addEpReward(self, episode, reward):
         """
         Saves an episode with its reward for later plotting.
@@ -54,6 +69,21 @@ class Plot:
         none
         """
         self.episodes.update({episode : reward})
+
+    def addEpisodes(self, ep):
+        """
+        Saves all episodes at once. Will delete any previously saved episode-reward values.
+
+        Parameters
+        ----------
+        ep: dictionary {int : float}
+            Each episode number paired with its reward.
+
+        Returns
+        -------
+        none
+        """
+        self.episodes = ep
 
     def displayQTable(self):
         """
@@ -83,6 +113,7 @@ class Plot:
         df.plot(kind="bar", sharex=False, sort_columns=True, rot=0)
         plt.xlabel("State")
         plt.ylabel("Value")
+        plt.title("Q-Table Weights")
         plt.show()
 
     def plotRewards(self):
@@ -98,6 +129,7 @@ class Plot:
         plt.xlabel("Episode")
         plt.ylabel("Reward")
         plt.legend("Reward")
+        plt.title("Episode Rewards")
         plt.show()
 
 if __name__ == '__main__':
